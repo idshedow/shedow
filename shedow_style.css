@@ -1,6 +1,6 @@
 #header{
-background: #33f;
-height:4em;
+background: #88a;
+height:5em;
 }
 p{
 font-size: 1.5ex;
@@ -8,4 +8,11 @@ font-size: 1.5ex;
 #small_text{
 font-family: Arial, Geneva, sans-serif;
 font-size: 1.5ex;
+}
+#user_name{
+font-size: 2ex;
+color:#33f;
+}
+#red_text{
+color:red;
 }

@@ -38,26 +38,27 @@ else
 
 // view a list of links
 if (!isset($_GET['page']))
- $_GET['page']=0;
+	$_GET['page']=0;
 if (!isset($_GET['limit']))
- $_GET['limit']=10;
+	$_GET['limit']=10;
 $article = $db->query("SELECT * FROM link_list ORDER BY id DESC LIMIT ".$_GET['page'].",".$_GET['limit']);
 while ($post = $article->fetch(PDO::FETCH_ASSOC))
 {
-if ((strlen($post['list_link_text'])) > 150)
- {
- $shorted_text = substr($post['list_link_text'],0,strpos($post['list_link_text'],' ',150));
- echo "<a href=article.php?id=".$post['id'].">".$post['list_link_header']."</a><br>".$shorted_text."...<br>".$post['list_link_date']."<br>"."<a href=article.php?id=".$post['id'].">read more</a><br><br>";
- }
-else
- {
- echo "<a href=article.php?id=".$post['id'].">".$post['list_link_header']."</a><br>".$post ['list_link_text']."<br>".$post['list_link_date']."<br><br>";
- }
+	if ((strlen($post['list_link_text'])) > 150) // to short the text if it is longer 150 symbols
+	{
+		$shorted_text = substr($post['list_link_text'],0,strpos($post['list_link_text'],' ',150));
+		echo "<a href=article.php?id=".$post['id'].">".$post['list_link_header']."</a><br>".$shorted_text."...<br><a href=profile.php?user=".$post['list_link_author'].">".$post['list_link_author']."</a>"." ".$post['list_link_date']."<br>"."<a href=article.php?id=".$post['id'].">read more</a><br><br>";
+	}
+	else  // if text is shorter 150 symbols - show it all
+	{
+		echo "<a href=article.php?id=".$post['id'].">".$post['list_link_header']."</a><br>".$post ['list_link_text']."<br><a href=profile.php?user=".$post['list_link_author'].">".$post['list_link_author']."</a>"." ".$post['list_link_date']."<br><br>";
+	}
+	
 }
 ?>
 <br>
-<span>Results <b><?=$first?></b> - <b><?=$last?></b> of <b><?=$rows?></b>;</span>
-<span>Page <b><?=$current?></b> of <b><?=$total?></b></span>
+<span>Results <b><?=$first?></b> - <b><?=$last?></b> of <b><?=$rows?></b>; </span>
+<span>Page <b><?=$current?></b> of <b><?=$total?></b>; </span>
 <?php
 
 // if current page is first page - don't show the link
@@ -78,7 +79,7 @@ else
 if (!((($page+$limit) / $limit) >= $pages) && ($pages != 1))
 {
 $next_page = $page+$limit;
-echo "<a href=".$_SERVER['PHP_SELF']."?page=".$next_page."&limit=$limit>next</a>";
+echo "<a href=".$_SERVER['PHP_SELF']."?page=".$next_page."&limit=".$limit.">next</a>";
 }
 ?>
 <hr>
