@@ -1,5 +1,6 @@
 <head>
 <link href="shedow_style.css" rel="stylesheet" type="text/css">
+<meta charset="utf-8">
 </head>
 <div id="header">
 <?php
@@ -10,6 +11,28 @@ if(!($db)) // if no connect, error and exit()
 	exit();
 }
 session_start();
+//  ***********  LANGUAGE CHOOSING  ******************
+if (isset($_GET['lang']))
+{
+	$lang = $_GET['lang'];
+	$_SESSION['lang'] = $lang;
+}
+else if (isset($_SESSION['lang']))
+{
+	$lang = $_SESSION['lang'];
+}
+else 
+	$lang = 'en';
+// including right language file
+if ($lang == 'en')
+	$lang_file = 'lang_en.php';
+else
+	$lang_file = 'lang_ua.php';
+include_once $lang_file;
+echo "<a href='index.php?lang=en'> ENG </a>"; 
+echo "&#x00a0; &#x00a0;";
+echo "<a href='index.php?lang=ua'> UA </a><br>";
+//  **********  AUTHORIZATION  **********************
 if (!isset($_SESSION['user'])) // if we're not authorized
 {
 	if (isset($_POST['submit']))// if we're logging in
@@ -38,7 +61,7 @@ if (!isset($_SESSION['user'])) // if we're not authorized
 			}
 			else
 			{
-				echo "Welcome, ".$_SESSION['user']." <a href='profile.php?user=".$_SESSION['user']."'>profile</a>";
+				echo $language['welcome'].", ".$_SESSION['user']." <a href='profile.php?user=".$_SESSION['user']."'>profile</a>";
 			 	include "welcome.php";
 				if ($_SESSION['user_role'] == 4)
 				{
@@ -66,7 +89,7 @@ else
 	}
 	else
 	{
-		echo "Welcome, ".$_SESSION['user']." <a href='profile.php?user=".$_SESSION['user']."'>profile</a>";
+		echo $language['welcome'].", ".$_SESSION['user']." <a href='profile.php?user=".$_SESSION['user']."'>profile</a>";
 		include "welcome.php";
 		if ($_SESSION['user_role'] == 4)
 		{

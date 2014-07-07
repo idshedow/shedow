@@ -10,9 +10,12 @@ if (isset($_SESSION['user']))
 {
 	if ($_SESSION['user_role'] >= 3)
 	{
-		echo "<span id='small_text'>Here is the view of your article:<br></span>";
+		echo "<span id='small_text'>Here is the view of your article in English:<br></span>";
 		echo "<h3>".$_SESSION['article_header']."</h3>";
-		echo "<p>".$_SESSION['article_text'];
+		echo "<p>".$_SESSION['article_text']."<br><br>";
+		echo "<span id='small_text'>Here is the view of your article in Ukrainian:<br></span>";
+		echo "<h3>".$_SESSION['article_header_ua']."</h3>";
+		echo "<p>".$_SESSION['article_text_ua']."<br>";
 		echo "<p>".$_SESSION['user']." ".$_SESSION['date'];
 		echo "<p><a href='edit.php'>Edit the article</a>";
 		echo "<p><a href='index.php'>Back to Main Page</a>";

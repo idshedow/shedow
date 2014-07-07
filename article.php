@@ -7,9 +7,17 @@ if ((!isset($_SESSION['user'])) or ($_SESSION['user_role'] >=2)) // all users ex
 	
 	$article=$db->query("SELECT * FROM link_list WHERE id=".$_GET['id']);
 	$view_article=$article->fetch(PDO::FETCH_ASSOC);
-
-	echo "<h4>".$view_article['list_link_header']."</h4>";
-	echo "<p>".$view_article['list_link_text']."<br><br>";
+	if (($_SESSION['lang']) == 'en') // view article in English if ENG is chosen
+	{
+		echo "<h4>".$view_article['list_link_header']."</h4>";
+		echo "<p>".$view_article['list_link_text']."<br><br>";
+	}
+	else  // view article in Ukrainian if UA is chosen
+	{
+		echo "<h4>".$view_article['list_link_header_ua']."</h4>";
+		echo "<p>".$view_article['list_link_text_ua']."<br><br>";
+	}
+	// link to author's profile page and date
 	echo "<a href=profile.php?user=".$view_article['list_link_author'].">".$view_article['list_link_author']."</a>"." ";
 	echo $view_article['list_link_date']."<br><br>";
 	// if you are autorized and you are moder or admin...

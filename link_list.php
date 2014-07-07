@@ -41,17 +41,28 @@ if (!isset($_GET['page']))
 	$_GET['page']=0;
 if (!isset($_GET['limit']))
 	$_GET['limit']=10;
+
 $article = $db->query("SELECT * FROM link_list ORDER BY id DESC LIMIT ".$_GET['page'].",".$_GET['limit']);
 while ($post = $article->fetch(PDO::FETCH_ASSOC))
 {
+	if (($_SESSION['lang']) == 'en')
+	{
+		$lang_header = $post['list_link_header'];
+		$lang_text = $post['list_link_text'];
+	}
+	else
+	{
+		$lang_header = $post['list_link_header_ua'];
+		$lang_text = $post['list_link_text_ua'];
+	}
 	if ((strlen($post['list_link_text'])) > 150) // to short the text if it is longer 150 symbols
 	{
-		$shorted_text = substr($post['list_link_text'],0,strpos($post['list_link_text'],' ',150));
-		echo "<a href=article.php?id=".$post['id'].">".$post['list_link_header']."</a><br>".$shorted_text."...<br><a href=profile.php?user=".$post['list_link_author'].">".$post['list_link_author']."</a>"." ".$post['list_link_date']."<br>"."<a href=article.php?id=".$post['id'].">read more</a><br><br>";
+		$shorted_text = substr($lang_text,0,strpos($lang_text,' ',150));
+		echo "<a href=article.php?id=".$post['id'].">".$lang_header."</a><br>".$shorted_text."...<br><a href=profile.php?user=".$post['list_link_author'].">".$post['list_link_author']."</a>"." ".$post['list_link_date']."<br>"."<a href=article.php?id=".$post['id'].">read more</a><br><br>";
 	}
 	else  // if text is shorter 150 symbols - show it all
 	{
-		echo "<a href=article.php?id=".$post['id'].">".$post['list_link_header']."</a><br>".$post ['list_link_text']."<br><a href=profile.php?user=".$post['list_link_author'].">".$post['list_link_author']."</a>"." ".$post['list_link_date']."<br><br>";
+		echo "<a href=article.php?id=".$post['id'].">".$lang_header."</a><br>".$lang_text."<br><a href=profile.php?user=".$post['list_link_author'].">".$post['list_link_author']."</a>"." ".$post['list_link_date']."<br><br>";
 	}
 	
 }
@@ -65,7 +76,7 @@ while ($post = $article->fetch(PDO::FETCH_ASSOC))
 if ($page != 0)
 {
 $back_page = $page - $limit;
-echo "<a href=".$_SERVER['PHP_SELF']."?page=$back_page&limit=$limit> back </a>";
+echo "<a href=".$_SERVER['PHP_SELF']."?page=".$back_page."&limit=".$limit."> back </a>";
 }
 // links to pages
 for ($i=1; $i <= $pages; $i++)
@@ -74,7 +85,7 @@ $ppage = $limit*($i - 1);
 if ($ppage == $page)
  echo "<b> $i </b>";
 else
- echo "<a href=".$_SERVER['PHP_SELF']."?page=$ppage&limit=$limit> $i </a>";
+ echo "<a href=".$_SERVER['PHP_SELF']."?page=".$ppage."&limit=".$limit."> $i </a>";
 }
 if (!((($page+$limit) / $limit) >= $pages) && ($pages != 1))
 {
