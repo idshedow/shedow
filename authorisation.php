@@ -22,25 +22,32 @@ else if (isset($_SESSION['lang']))
 	$lang = $_SESSION['lang'];
 }
 else 
-	$lang = 'en';
+	{
+		$lang = 'en';
+		$_SESSION['lang'] = $lang;
+	}
 // including right language file
 if ($lang == 'en')
 	$lang_file = 'lang_en.php';
 else
 	$lang_file = 'lang_ua.php';
 include_once $lang_file;
-echo "<a href='index.php?lang=en'> ENG </a>"; 
-echo "&#x00a0; &#x00a0;";
-echo "<a href='index.php?lang=ua'> UA </a><br>";
+?>
+<span id='flags'>
+<a href='index.php?lang=en'><img src='images/uk.gif'></a> 
+&#x00a0; &#x00a0;
+<a href='index.php?lang=ua'><img src='images/ua.gif'></a><br>
+</span>
+<?php
 //  **********  AUTHORIZATION  **********************
 if (!isset($_SESSION['user'])) // if we're not authorized
 {
 	if (isset($_POST['submit']))// if we're logging in
 	{
-	 	
+	 	// looking the user with the same user_name
 		$stmt = $db->query("SELECT user_name, user_password, user_role FROM users WHERE user_name='".$_POST['login']."'");
 		$user=$stmt->fetch(PDO::FETCH_ASSOC);
-		if(($user['user_password'] === $_POST['pass']) && ($user['user_name'] === $_POST['login']))
+		if(($user['user_password'] === md5($_POST['pass'])) && ($user['user_name'] === $_POST['login']))
 		{
 			// if success authorization:
 			$_SESSION['user']=$user['user_name'];
@@ -61,11 +68,11 @@ if (!isset($_SESSION['user'])) // if we're not authorized
 			}
 			else
 			{
-				echo $language['welcome'].", ".$_SESSION['user']." <a href='profile.php?user=".$_SESSION['user']."'>profile</a>";
+				echo "<span id='large_text'>".$language['welcome'].", ".$_SESSION['user']." <a href='profile.php?user=".$_SESSION['user']."'>".$language['profile']."</a></span>";
 			 	include "welcome.php";
 				if ($_SESSION['user_role'] == 4)
 				{
-					echo "<a href='admin.php'>Admin menu</a>";
+					echo "<span id='admin'><a href='admin.php'>".$language['admin_menu']."</a></span>";
 				}
 			}
 		}
@@ -89,11 +96,11 @@ else
 	}
 	else
 	{
-		echo $language['welcome'].", ".$_SESSION['user']." <a href='profile.php?user=".$_SESSION['user']."'>profile</a>";
+		echo "<span id='large_text'>".$language['welcome'].", ".$_SESSION['user']." <a href='profile.php?user=".$_SESSION['user']."'>".$language['profile']."</a><span>";
 		include "welcome.php";
 		if ($_SESSION['user_role'] == 4)
 		{
-			echo "<a href='admin.php'>Admin menu</a>";
+			echo "<span id='admin'><a href='admin.php'>".$language['admin_menu']."</a></span>";
 		}
 	}
 }

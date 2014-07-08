@@ -7,7 +7,7 @@ $profile = $user_info->fetch(PDO::FETCH_ASSOC);
 if ((isset($_SESSION['user_role'])) and ($_SESSION['user_role']>=2))
 {
 	// if 
-	if ((($_SESSION['user'])==($profile['user_name'])) or (($_SESSION['user_role']) == 4))
+	if ((($_SESSION['user'])==($profile['user_name'])) or ($_SESSION['user_role'] == 4))
 	{
 		if (isset($_POST['save_changes']))
 		{
@@ -40,14 +40,14 @@ if ((isset($_SESSION['user_role'])) and ($_SESSION['user_role']>=2))
 				{
 					$pass_search = $db->query("SELECT * FROM users WHERE user_name='".$_GET['user']."'");
 					$pass_found = $pass_search->fetch(PDO::FETCH_ASSOC);
-					if (($_POST['old_pass'])===($pass_found['user_password']))  // true if we wrote right old password
+					if ((md5($_POST['old_pass']))===($pass_found['user_password']))  // true if we wrote right old password
 					{
 						// password verification
 						if (($_POST['changed_pass'])===($_POST['changed_veri_pass']))
 						{
 							// if all is right we can change password:
 							$edit = $db->prepare("UPDATE users SET user_password= :pass WHERE user_name='".$_GET['user']."'");
-							$edit->bindParam(':pass',$_POST['changed_pass']);
+							$edit->bindParam(':pass',md5($_POST['changed_pass']));
 							$edit->execute();
 							// send e message to profile page that we changed the password
 							$_SESSION['pass_changed'] = "Password successfully changed!<br>";
@@ -113,10 +113,10 @@ if ((isset($_SESSION['user_role'])) and ($_SESSION['user_role']>=2))
 			}
 		}
 		// users can delete their profile
-		echo "<a href='delete_own_acc.php?user=".$profile['user_name']."'>Delete your profile</a>";
+	echo "<a href='delete_own_acc.php?user=".$profile['user_name']."'>Delete your profile</a>";
 	}
 	else 
-		header("Location: index.php");;
+		header("Location: index.php");
 }
 else 
 	header("Location: index.php");
@@ -125,8 +125,9 @@ else
 <head>   <!--  --------  CSS  -------  -->
 	<link href="shedow_style.css" rel="stylesheet" type="text/css">
 </head>
-<form method="POST" enctype="multipart/form-data">
 <table cellpadding="5">
+<form method="POST" enctype="multipart/form-data">
+
 	<tr><td align="right"><p> User Name: </td> 
 		<td><p id="user_name"><?=$profile['user_name']?></td>
 	</tr>
@@ -165,7 +166,7 @@ if (isset($profile['user_avatar']))
 if ((isset($_SESSION['user_role'])) and ($_SESSION['user_role']==4))
 {
 	echo "User role: ";
-	echo "<form method='post'>";
+	//echo "<form method='post'>";
 	echo "<select name = 'role' size='1'>";
 	echo "<option value='4'>Administrator</option>";
 	echo "<option value='3'>Moderator</option>";

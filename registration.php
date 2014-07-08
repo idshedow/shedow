@@ -38,7 +38,7 @@ if (isset($_POST['registr']))
 						{
 							$date = date("d-m-Y H:i");
 							$reg = $db->prepare("INSERT INTO users (user_name, user_password, user_mail, user_reg_date, user_last_visit, user_role) VALUES (?,?,?,?,?,?)");
-							$reg->execute(array($_POST['new_user'], $_POST['new_user_pass'], $_POST['new_user_e_mail'], $date, $date, '2'));
+							$reg->execute(array($_POST['new_user'], md5($_POST['new_user_pass']), $_POST['new_user_e_mail'], $date, $date, '2'));
 						}
 						catch(PDOException $e)
 						{

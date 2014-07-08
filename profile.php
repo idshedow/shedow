@@ -26,23 +26,23 @@ else
 	echo "<img src='images/noavatar.png'><br>";
 // user name if he has it
 if (($profile['user_first_name']) or ($profile['user_last_name']))
-	echo "User Name: ".$profile['user_first_name']." ".$profile['user_last_name'].";<br>";
+	echo $language['user_name'].": ".$profile['user_first_name']." ".$profile['user_last_name'].";<br>";
 // other information
 if (isset($_SESSION['user']))
 {
-	echo "User E-mail: ".$profile['user_mail'].";<br>";
+	echo $language['e-mail'].": ".$profile['user_mail'].";<br>";
 }
-echo "User Registered: ".$profile['user_reg_date'].";<br>";
-echo "Last Visited: ".$profile['user_last_visit'].";<br>";
+echo $language['user_reg'].": ".$profile['user_reg_date'].";<br>";
+echo $language['last_visit'].": ".$profile['user_last_visit'].";<br>";
 echo "<br>";
 //echo $_SESSION['user_role'];
 if ((isset($_SESSION['user_role'])) and ($_SESSION['user_role']>=2))
 {
 	if ((($_SESSION['user'])==($profile['user_name'])) or (($_SESSION['user_role']) == 4))
 	{
-		echo "<a href='edit_profile.php?user=".$profile['user_name']."'>Edit the Profile</a><br>";
+		echo "<a href='edit_profile.php?user=".$profile['user_name']."'>".$language['edit_profile']."</a><br>";
 	}
 }
-echo "<a href='index.php'>Back to Main Page</a>";
+echo "<a href='index.php'>".$language['back_to_main']."</a>";
 ?>
 

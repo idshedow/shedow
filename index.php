@@ -13,7 +13,7 @@ if (isset($_SESSION['user']))
 	// if user have a right to add new matherials
 	if ($_SESSION['user_role'] >= 3)
 	{
-		echo '<a href="form_news.php">Add metherial</a>';
+		echo '<span id="add_math"><a href="form_news.php">'.$language['add_math'].'</a></span>';
 	}
 	echo "<br><br>";
 	// if user is banned
