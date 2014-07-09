@@ -60,27 +60,28 @@ while ($post = $article->fetch(PDO::FETCH_ASSOC))
 		$lang_header = $post['list_link_header_ua'];
 		$lang_text = $post['list_link_text_ua'];
 	}
-	if ((strlen($post['list_link_text'])) > 150) // to short the text if it is longer 150 symbols
+	if ((strlen($lang_text)) > 150) // to short the text if it is longer 150 symbols
 	{
 		$shorted_text = substr($lang_text,0,strpos($lang_text,' ',150));
-		echo "<a href=article.php?id=".$post['id']."><b>".$lang_header."</b></a><br>".$shorted_text."...<br><a href=profile.php?user=".$post['list_link_author'].">".$post['list_link_author']."</a><i>"." ".$post['list_link_date']."</i><br>"."<a href=article.php?id=".$post['id'].">read more</a><br><br>";
+		echo "<a href=article.php?id={$post['id']}><b>{$lang_header}</b></a><br>{$shorted_text}...<br><a href=profile.php?user={$post['list_link_author']}>{$post['list_link_author']}</a><i> {$post['list_link_date']}</i><br><a href=article.php?id={$post['id']}>read more</a><br><br>";
 	}
 	else  // if text is shorter 150 symbols - show it all
 	{
-		echo "<a href=article.php?id=".$post['id']."><b>".$lang_header."</b></a><br>".$lang_text."<br><a href=profile.php?user=".$post['list_link_author'].">".$post['list_link_author']."</a><i>"." ".$post['list_link_date']."</i><br><br>";
+		echo "<a href=article.php?id={$post['id']}><b>{$lang_header}</b></a><br>{$lang_text}<br><a href=profile.php?user={$post['list_link_author']}>{$post['list_link_author']}</a><i> {$post['list_link_date']}</i><br><br>";
 	}
 	echo "<img src='images/city.jpeg' width='480' height='20'><br>";
-}
+}?>
 
-															// results 1 - 10 of 21; page  1 of 3;
-echo "<br>Results <b>".$first."</b> - <b>".$last."</b> of <b>".$rows."</b>; ";
-echo " Page <b>".$current."</b> of <b>".$total."</b>;";
-																		// 1	2	3	next
+															<!-- results 1 - 10 of 21; page  1 of 3; -->
+<br>Results <b><?=$first?></b> - <b><?=$last?></b> of <b><?=$rows?></b>;
+ Page <b><?=$current?></b> of <b><?=$total?></b>;
+
+<?php																	// 1	2	3	next
 // if current page is first page - don't show the link "back"
 if ($page != 0)
 {
 	$back_page = $page - $limit;
-	echo "<a href=".$_SERVER['PHP_SELF']."?page=".$back_page."&limit=".$limit."> back </a>";
+	echo "<a href=".$_SERVER['PHP_SELF']."?page={$back_page}> back </a>";
 }
 for ($i=1; $i <= $pages; $i++)  // don't show the link to number of current page
 {

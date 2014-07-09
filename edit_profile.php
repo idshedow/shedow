@@ -7,78 +7,75 @@ $profile = $user_info->fetch(PDO::FETCH_ASSOC);
 if ((isset($_SESSION['user_role'])) and ($_SESSION['user_role']>=2))
 {
 	// if 
-	if ((($_SESSION['user'])==($profile['user_name'])) or ($_SESSION['user_role'] == 4))
+	if (($_SESSION['user'] == $profile['user_name']) or ($_SESSION['user_role'] == 4))
 	{
-		if (isset($_POST['save_changes']))
+		// ***********   CHANGING E_MAIL  *****************
+		if (isset($_POST['changed_e_mail']))
 		{
-			// ***********   CHANGING E_MAIL  *****************
-			if ($_POST['changed_e_mail'])
+			$mail_search = $db->query("SELECT * FROM users WHERE user_mail='".$_POST['changed_e_mail']."'");
+			$find_same_mail = $mail_search->fetch(PDO::FETCH_ASSOC);
+			if ($find_same_mail)  // true if we have already this e-mail in data base
 			{
-				$mail_search = $db->query("SELECT * FROM users WHERE user_mail='".$_POST['changed_e_mail']."'");
-				$find_same_mail = $mail_search->fetch(PDO::FETCH_ASSOC);
-				if ($find_same_mail)  // true if we have already this e-mail in data base
-				{
-					echo "This e-mail is allready exist. Try to use another e-mail.";
-				}
-				else  // we can change user's e-mail
-				{
-					$edit = $db->prepare("UPDATE users SET user_mail= :mail WHERE user_name='".$profile['user_name']."'");
-					$edit->bindParam(':mail',$_POST['changed_e_mail']);
-					$edit->execute();
-					$_SESSION['e_mail_changed'] = "E-mail succussfully changed!<br>";
-					header("Location: profile.php?user=".$profile['user_name']);
-				}
+				echo "This e-mail is allready exist. Try to use another e-mail.";
 			}
-			//  ********** CHANGING PASWORD  ******************
-			if ($_POST['changed_pass'])  // if we typed anything in the "new password" field
+			else  // we can change user's e-mail
 			{
-				if(!$_POST['old_pass']) // if we didn't write old password, we cannot change it
-				{
-					echo "You must write your old password to change it";
-				}
-				else  //  checking old password
-				{
-					$pass_search = $db->query("SELECT * FROM users WHERE user_name='".$_GET['user']."'");
-					$pass_found = $pass_search->fetch(PDO::FETCH_ASSOC);
-					if ((md5($_POST['old_pass']))===($pass_found['user_password']))  // true if we wrote right old password
-					{
-						// password verification
-						if (($_POST['changed_pass'])===($_POST['changed_veri_pass']))
-						{
-							// if all is right we can change password:
-							$edit = $db->prepare("UPDATE users SET user_password= :pass WHERE user_name='".$_GET['user']."'");
-							$edit->bindParam(':pass',md5($_POST['changed_pass']));
-							$edit->execute();
-							// send e message to profile page that we changed the password
-							$_SESSION['pass_changed'] = "Password successfully changed!<br>";
-							header("Location: profile.php?user=".$profile['user_name']); // open profile page after the task
-						}
-						else
-						{  
-							echo "You wrote different new passwords."; // if new pass != verification pass
-						}
-					}
-					else  // if old password is incorrect
-					{
-						echo "Incorrect old password!";
-					}
-				}
-			}
-			//  ***************  CHANGE NAME  **********************
-			if ($_POST['first_name'])
-			{
-				$edit = $db->prepare("UPDATE users SET user_first_name= :first_name WHERE user_name='".$_GET['user']."'");
-				$edit->bindParam(':first_name',$_POST['first_name']);
+				$edit = $db->prepare("UPDATE users SET user_mail= :mail WHERE user_name='".$profile['user_name']."'");
+				$edit->bindParam(':mail',$_POST['changed_e_mail']);
 				$edit->execute();
+				$_SESSION['e_mail_changed'] = "E-mail succussfully changed!<br>";
 				header("Location: profile.php?user=".$profile['user_name']);
 			}
-			if ($_POST['last_name'])
+		}
+		//  ********** CHANGING PASWORD  ******************
+		if (isset($_POST['changed_pass']))  // if we typed anything in the "new password" field
+		{
+			if(!$_POST['old_pass']) // if we didn't write old password, we cannot change it
 			{
-				$edit = $db->prepare("UPDATE users SET user_last_name= :last_name WHERE user_name='".$_GET['user']."'");
-				$edit->bindParam(':last_name',$_POST['last_name']);
-				$edit->execute();
-				header("Location: profile.php?user=".$profile['user_name']);
+				echo "You must write your old password to change it";
 			}
+			else  //  checking old password
+			{
+				$pass_search = $db->query("SELECT * FROM users WHERE user_name='".$_GET['user']."'");
+				$pass_found = $pass_search->fetch(PDO::FETCH_ASSOC);
+				if ((md5($_POST['old_pass']))===($pass_found['user_password']))  // true if we wrote right old password
+				{
+					// password verification
+					if (($_POST['changed_pass'])===($_POST['changed_veri_pass']))
+					{
+						// if all is right we can change password:
+						$edit = $db->prepare("UPDATE users SET user_password= :pass WHERE user_name='".$_GET['user']."'");
+						$edit->bindParam(':pass',md5($_POST['changed_pass']));
+						$edit->execute();
+						// send e message to profile page that we changed the password
+						$_SESSION['pass_changed'] = "Password successfully changed!<br>";
+						header("Location: profile.php?user=".$profile['user_name']); // open profile page after the task
+					}
+					else
+					{  
+						echo "You wrote different new passwords."; // if new pass != verification pass
+					}
+				}
+				else  // if old password is incorrect
+				{
+					echo "Incorrect old password!";
+				}
+			}
+		}
+		//  ***************  CHANGE NAME  **********************
+		if (isset($_POST['first_name']))
+		{
+			$edit = $db->prepare("UPDATE users SET user_first_name= :first_name WHERE user_name='".$_GET['user']."'");
+			$edit->bindParam(':first_name',$_POST['first_name']);
+			$edit->execute();
+			header("Location: profile.php?user=".$profile['user_name']);
+		}
+		if (isset($_POST['last_name']))
+		{
+			$edit = $db->prepare("UPDATE users SET user_last_name= :last_name WHERE user_name='".$_GET['user']."'");
+			$edit->bindParam(':last_name',$_POST['last_name']);
+			$edit->execute();
+			header("Location: profile.php?user=".$profile['user_name']);
 		}
 			//  *****************  CANCEL BUTTON ******************
 		if (isset($_POST['cancel'])) // cancel button - return to profile page
@@ -113,7 +110,8 @@ if ((isset($_SESSION['user_role'])) and ($_SESSION['user_role']>=2))
 			}
 		}
 		// users can delete their profile
-	echo "<a href='delete_own_acc.php?user=".$profile['user_name']."'>Delete your profile</a>";
+		if ($_SESSION['user'] == $profile['user_name'])
+			echo "<a href='delete_own_acc.php?user=".$profile['user_name']."'>Delete your profile</a>";
 	}
 	else 
 		header("Location: index.php");
@@ -165,21 +163,24 @@ if (isset($profile['user_avatar']))
 }
 if ((isset($_SESSION['user_role'])) and ($_SESSION['user_role']==4))
 {
-	echo "User role: ";
-	//echo "<form method='post'>";
-	echo "<select name = 'role' size='1'>";
-	echo "<option value='4'>Administrator</option>";
-	echo "<option value='3'>Moderator</option>";
-	echo "<option value='2'>User</option>";
-	echo "<option value='1'>Banned</option>";
-	echo "</select>";
-	echo "<input type='submit' name='change_role' value='Change role'>";
-	echo "</form>";
+?>
+<!-- Menu where admin can change role of user -->
+<p>User role: 
+<select name = 'role' size='1'>
+<option value='4'>Administrator</option>
+<option value='3'>Moderator</option>
+<option value='2'>User</option>
+<option value='1'>Banned</option>
+</select>
+<input type='submit' name='change_role' value='Change role'>
+
+<?php
 	if (isset($_POST['change_role']))
 	{
 		$edit = $db->prepare("UPDATE users SET user_role= :role WHERE user_name='".$_GET['user']."'");
 		$edit->bindParam(':role', $_POST['role']);
 		$edit->execute();
+		header("Location: edit_profile.php?user=".$profile['user_name']);
 	}
 }
 ?>

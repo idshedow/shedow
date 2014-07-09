@@ -10,23 +10,6 @@ if (isset($_SESSION['user']))
 	// cheking user's permissions
 	if ($_SESSION['user_role'] >= 3)
 	{
-		echo "<form action=".$_SERVER['REQUEST_URI']." method='post'>";
-		echo "<table>";
-		echo "<tr><td>";
-		echo "Text in English: <br>";
-		echo "<input type='text' name='header' size='60' placeholder='header'></td><td>";
-		echo "Text in Ukrainian: <br>";
-		echo "<input type='text' name='header_ua' size='60' placeholder='header'></td>";
-		echo "</tr><tr><td>";
-		echo "<textarea name='article' cols='80' rows='20'>";
-		echo "</textarea>";
-		echo "</td><td>";
-		echo "<textarea name='article_ua' cols='80' rows='20'>";
-		echo "</textarea>";
-		echo "</td></tr>";
-		echo "</table>";
-		echo "<input name='add_article' type='submit' value='Add new matherial'>";
-		echo "</form>";
 		// set values to variables
 		$time_date=date("d-m-Y H:i");
 		$_SESSION['date']=$time_date;
@@ -62,14 +45,28 @@ if (isset($_SESSION['user']))
 	}
 	else
 	{
-		echo "You have no permission to add new matherial.<br>";
-		echo "<a href='index.php'>Back to main page</a>";
+		header("Location: index.php");
 	}
 }
 else
 	{
-		echo "Unauthorized users cannot add new matherials.<br>";
-		echo "<a href='index.php'>Back to main page</a>";
+		header("Location: index.php");
 	}
 ?>
-
+<form action="<?=$_SERVER['REQUEST_URI']?>" method='post'>
+<table>
+<tr><td>
+<p>Text in English: <br>
+<input type='text' name='header' size='60' placeholder='header'></td><td>
+<p>Text in Ukrainian: <br>
+<input type='text' name='header_ua' size='60' placeholder='header'></td>
+</tr><tr><td>
+<textarea name='article' cols='80' rows='20'>
+</textarea>
+</td><td>
+<textarea name='article_ua' cols='80' rows='20'>
+</textarea>
+</td></tr>
+</table>
+<input name='add_article' type='submit' value='Add new matherial'>
+</form>

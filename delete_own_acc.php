@@ -4,11 +4,7 @@ include "authorisation.php";
 if ((isset($_SESSION['user'])) and ($_SESSION['user'] == $_GET['user']))
 {
 	$user_name = trim($_SESSION['user']);
-	echo "Are you sure you want to delete your profile from this site?<br>";
-	echo "<form method='post'>";
-	echo "<input type='submit' name='delete' value='Yes'>";
-	echo "<input type='submit' name='cancel' value='No'>";
-	echo "</form>";
+
 	if (isset($_POST['delete']))
 	{
 		$db->exec("DELETE FROM users WHERE user_name='".$user_name."'");
@@ -20,4 +16,10 @@ if ((isset($_SESSION['user'])) and ($_SESSION['user'] == $_GET['user']))
 }
 else
 	header("Location: index.php");
-?>
+?>	
+
+<p>Are you sure you want to delete your profile from this site?<br>
+<form method='post'>
+<input type='submit' name='delete' value='Yes'>
+<input type='submit' name='cancel' value='No'>
+</form>

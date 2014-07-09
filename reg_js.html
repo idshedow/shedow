@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="shedow_style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript">
+function validateForm()
+{
+	var user_name = document.forms["reg_form"]["new_user"].value;
+	var user_pass = document.forms["reg_form"]["new_user_pass"].value;
+	var veri_pass = document.forms["reg_form"]["new_user_repass"].value;
+	// user must write user_name and password to register
+	if ((user_name == null || user_name == "") || (user_pass == null || user_pass == ""))
+	{
+		alert("User name and password must be written");
+		return false;
+	}
+	else
+	{
+		// if verification of password failed - error
+		if (user_pass != veri_pass)
+		{
+			alert("You must write the same password in verification field");
+			return false;
+		}
+		else
+		{
+			// if user_name is longer 15 symbols - error
+			var user_name_len = user_name.length;
+			if (user_name_len >= 15)
+			{
+				alert("User name must be shorter than 15 symbols");
+				return false;
+			}
+			else
+			{
+				// if all is right registration can begin
+				alert("Form successfully submitted");
+				return true;
+			}
+		}
+	}
+}
+</script>
+</head>
+<body>
+<div id="header"><span id="large_text"> Registration form: </span></div>
+<form action="index.php" name="reg_form" onsubmit="return validateForm()" method="post">
+<table width="30%" cellpadding="5">
+	<tr><td width="50%" align="right"> User Name </td> 
+		<td><input type="text" name="new_user" size="20" maxlength="25"></td>
+	</tr>
+	<tr><td align="right"> Password </td> 
+		<td><input type="password" name="new_user_pass" size="20" maxlength="25"></td>
+	</tr>
+	<tr><td align="right"> Verify Password </td> 
+		<td><input type="password" name="new_user_repass" size="20" maxlength="25"></td>
+	</tr>
+	<tr><td align="right"> E-mail </td> 
+		<td><input type="text" name="new_user_e_mail" size="20" maxlength="25"></td>
+	</tr>
+</table>
+<br>
+<input name="registr" type="submit" value="Register now">
+</form>
+</body>
+</html>

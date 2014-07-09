@@ -18,12 +18,6 @@ if (($_SESSION['user_role']) >= 3)
 			$lang_header = $edit_article['list_link_header_ua'];
 			$lang_text = $edit_article['list_link_text_ua'];
 		}
-		echo "<form action=".$_SERVER['REQUEST_URI']." method='post'>";
-		echo '<input type="text" name="header" size="40" value="'.$lang_header.'"><br>';
-		echo "<textarea name='article' cols='100' rows='20'>";
-		echo $lang_text."</textarea><br>";
-		echo "<input name='submit' type='submit' value='Save changes'>";
-		echo "</form>";
 		if (isset($_POST['submit']))
 		{
 			// edit only english version of article
@@ -53,11 +47,17 @@ if (($_SESSION['user_role']) >= 3)
 		}
 	}
 	else
-	{
-		echo "You can edit only your articles.<br>";
-		echo "<a href='index.php'>Back to Main Page</a>";
-	}
+	{?>
+		<p>You can edit only your articles.<br>
+		<a href='index.php'>Back to Main Page</a>
+	<?php }
 }
 else
-	echo "You have no permission to do this.";
+	header("Location: index.php");
 ?>
+<form action="<?=$_SERVER['REQUEST_URI']?>" method='post'>
+<input type="text" name="header" size="40" value="<?=$lang_header?>"><br>
+<textarea name='article' cols='100' rows='20'>
+<?=$lang_text?></textarea><br>
+<input name='submit' type='submit' value='Save changes'>
+</form>

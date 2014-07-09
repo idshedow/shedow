@@ -67,19 +67,24 @@ if (!isset($_SESSION['user'])) // if we're not authorized
 				header("Location: index.php?ban=true");
 			}
 			else
-			{
-				echo "<span id='large_text'>".$language['welcome'].", ".$_SESSION['user']." <a href='profile.php?user=".$_SESSION['user']."'>".$language['profile']."</a></span>";
-			 	include "welcome.php";
+			{?>
+				<span id='large_text'><?=$language['welcome']?>, <?=$_SESSION['user']?> <a href='profile.php?user=<?=$_SESSION['user']?>'><?=$language['profile']?></a></span>
+			 	<?php 
+				include "welcome.php";
 				if ($_SESSION['user_role'] == 4)
-				{
-					echo "<span id='admin'><a href='admin.php'>".$language['admin_menu']."</a></span>";
+				{?>
+
+					<span id='large_text'><span id='admin'><a href='admin.php'><?=$language['admin_menu']?></a></span></span>";
+
+				<?php 
 				}
+				//header("Location: index.php");
 			}
 		}
 		else
 		{
 			include "check.php";
-			echo "Wrong user name/password";
+			echo "<span id='white'>Wrong user name/password</span>";
 	 	}
 	}
 	else 
@@ -100,7 +105,7 @@ else
 		include "welcome.php";
 		if ($_SESSION['user_role'] == 4)
 		{
-			echo "<span id='admin'><a href='admin.php'>".$language['admin_menu']."</a></span>";
+			echo "<span id='large_text'><span id='admin'><a href='admin.php'>".$language['admin_menu']."</a></span></span>";
 		}
 	}
 }

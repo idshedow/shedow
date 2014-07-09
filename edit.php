@@ -1,34 +1,15 @@
 <?php
 include "authorisation.php";
-if (isset($_SESSION['user']))
+if (!isset($_SESSION['user']))
 {
-	if ($_SESSION['user_role'] >= 3)
-	{
-		
-		echo "<form action=".$_SERVER['REQUEST_URI']." method='post'>";
-		echo "<table><tr><td>Here is an English version of article: <br>";
-		echo "<input type='text' name='header' size='40' value=".$_SESSION['article_header']."></td><td>Here is a Ukrainian version of article: <br>";
-		echo "<input type='text' name='header_ua' size='40' value=".$_SESSION['article_header_ua']."></td>";
-		echo "</tr><tr><td>";
-		echo "<textarea name='article' cols='100' rows='20'>";
-		echo $_SESSION['article_text']."</textarea></td><td>";
-		echo "<textarea name='article_ua' cols='100' rows='20'>";
-		echo $_SESSION['article_text_ua']."</textarea></td>";
-		echo "</tr></table>";
-		echo "<input name='submit' type='submit' value='Save changes'>";
-		echo "</form>";
-	}
-	else
-	{
-		echo "You have no permission to do this<br>";
-		echo "<a href='index.php'>Back to main page</a>";
-	}
+	header("Location: index.php");
 }
-else
-	{
-		echo "You cannot do it. Please authorize.<br>";
-		echo "<a href='index.php'>Back to main page</a>";
-	}
+if ($_SESSION['user_role'] < 3)
+{
+	header("Location: index.php");
+}		
+
+	
 if (isset($_POST['submit']))
 {
 	$max = $db->query("SELECT id FROM link_list ORDER BY id DESC LIMIT 1");
@@ -40,7 +21,7 @@ if (isset($_POST['submit']))
 	$text = $_SESSION['article_text'];
 	// ukrainian variables
 	$_SESSION['article_header_ua']=strip_tags($_POST['header_ua']);
-	$_SESSION['article_text_ua']=strip_tags($_POST['article_ua	']);
+	$_SESSION['article_text_ua']=strip_tags($_POST['article_ua']);
 	$header_ua = $_SESSION['article_header_ua'];
 	$text_ua = $_SESSION['article_text_ua'];
 
@@ -54,4 +35,16 @@ if (isset($_POST['submit']))
 	header("Location: view.php");
 }
 ?>
+<form action="<?=$_SERVER['REQUEST_URI']?>" method='post'>
+<table><tr><td>Here is an English version of article: <br>
+<input type='text' name='header' size='40' value="<?=$_SESSION['article_header']?>"></td><td>Here is a Ukrainian version of article: <br>
+<input type='text' name='header_ua' size='40' value="<?=$_SESSION['article_header_ua']?>"></td>
+</tr><tr><td>
+<textarea name='article' cols='100' rows='20'>
+<?=$_SESSION['article_text']?></textarea></td><td>
+<textarea name='article_ua' cols='100' rows='20'>
+<?=$_SESSION['article_text_ua']?></textarea></td>
+</tr></table>
+<input name='submit' type='submit' value="Save changes">
+</form>
 

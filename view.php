@@ -1,40 +1,28 @@
-<html>
-<head>
-<link href="shedow_style.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-
 <?php
 include "authorisation.php";
-if (isset($_SESSION['user']))
+if (!isset($_SESSION['user']))
 {
-	if ($_SESSION['user_role'] >= 3)
-	{
-		echo "<span id='small_text'>Here is the view of your article in English:<br></span>";
-		echo "<h3>".$_SESSION['article_header']."</h3>";
-		echo "<p>".$_SESSION['article_text']."<br><br>";
-		echo "<span id='small_text'>Here is the view of your article in Ukrainian:<br></span>";
-		echo "<h3>".$_SESSION['article_header_ua']."</h3>";
-		echo "<p>".$_SESSION['article_text_ua']."<br>";
-		echo "<p>".$_SESSION['user']." ".$_SESSION['date'];
-		echo "<p><a href='edit.php'>Edit the article</a>";
-		echo "<p><a href='index.php'>Back to Main Page</a>";
-	}
-	else
-	{
-		echo "You have no permission to do this.<br>";
-		echo "<a href='index.php'>Back to main page</a>";
-	}
+	header("Location: index.php");
 }
-else
+if ($_SESSION['user_role'] < 3)
 {
-	echo "You cannot do it. Please authorize.<br>";
-	echo "<a href='index.php'>Back to main page</a>";
+	header("Location: index.php");
 }
 ?>
-
-
-
+<html>
+<head>
+	<link href="shedow_style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<span id='small_text'>Here is the view of your article in English:<br></span>
+<h3><?=$_SESSION['article_header']?></h3>
+<p><?=$_SESSION['article_text']?><br><br>
+<span id='small_text'>Here is the view of your article in Ukrainian:<br></span>
+<h3><?=$_SESSION['article_header_ua']?></h3>
+<p><?=$_SESSION['article_text_ua']?><br>
+<p><?=$_SESSION['user']?> <i><?=$_SESSION['date']?></i>
+<p><a href='edit.php'>Edit the article</a>
+<p><a href='index.php'>Back to Main Page</a>
 </body>
 </html>
 
