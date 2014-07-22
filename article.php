@@ -5,7 +5,7 @@
 
 include "authorisation.php";
 // all users except banned can view articles
-if ((!isset($_SESSION['user'])) or ($_SESSION['user_role'] == 1)) {
+if ((isset($_SESSION['user'])) && ($_SESSION['user_role'] == 1)) {
   header("Location: index.php");
 }
   $article = $db->query("SELECT * FROM link_list WHERE id=" . $_GET['id']);
