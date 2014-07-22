@@ -3,39 +3,48 @@ background: #88a;
 height:7em;
 background-image:url(images/stone.jpg);
 }
+
 p{
 font-family:Calibri, Arial, sans-serif;
 font-size: 2ex;
 }
+
 #small_text{
 font-family: Arial, Geneva, sans-serif;
 font-size: 14px;
 }
+
 #user_name{
 font-size: 2ex;
 color:#33f;
 }
+
 #red_text{
 color:red;
 }
+
 #flags{
 position:absolute;
 right:70px;
 }
+
 #admin{
 position:absolute;
 right:170px;
 top:10px;
 }
+
 #large_text{
 font-size:20px;
 font-family:Droid Sans Mono, Arial, sans-serif;
 color:white;
 }
+
 #add_math{
 font-family:Arial, Geneva, sans-serif;
 font-size:2.2ex;
 }
+
 html{
 background-image:url(images/white.jpg);
 }
@@ -43,6 +52,7 @@ background-image:url(images/white.jpg);
 #large_text :visited{
 color:#ffa;
 }
+
 #large_text :link{
 color:#ffa;
 }

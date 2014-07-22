@@ -1,11 +1,15 @@
 <?php
-include "db.php";
+/**
+*  File with language variables in English.
+*/
+include 'db.php';
 $language = array();
-for ($i=1; $i<=6; $i++)
-{
-	$translate = $db->query("SELECT en FROM translate WHERE id='".$i."'");
-	$lang = $translate->fetch(PDO::FETCH_ASSOC);
-	$lang_array[$i] = $lang['en'];
+$translate = $db->query("SELECT * FROM translate");
+$row_count = $translate->rowCount();
+for ($i = 1; $i <= $row_count; $i++) {
+  $translate = $db->query("SELECT en FROM translate WHERE id= '{$i}'");
+  $lang = $translate->fetch(PDO::FETCH_ASSOC);
+  $lang_array[$i] = $lang['en'];
 }
 
 // authorization block

@@ -1,17 +1,19 @@
 <?php
-include "authorisation.php";
-if (!isset($_SESSION['user']))
-{
-	header("Location: index.php");
+/**
+*  Page where user can view his article just added with "edit" button.
+*/
+include 'authorisation.php';
+if (!isset($_SESSION['user'])) {
+  header("Location: index.php");
 }
-if ($_SESSION['user_role'] < 3)
-{
-	header("Location: index.php");
+if ($_SESSION['user_role'] < 3) {
+  header("Location: index.php");
 }
 ?>
+
 <html>
 <head>
-	<link href="shedow_style.css" rel="stylesheet" type="text/css">
+  <link href="shedow_style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <span id='small_text'>Here is the view of your article in English:<br></span>
@@ -25,4 +27,3 @@ if ($_SESSION['user_role'] < 3)
 <p><a href='index.php'>Back to Main Page</a>
 </body>
 </html>
-
