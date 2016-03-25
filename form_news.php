@@ -3,8 +3,9 @@
 </head>
 <?php
 /**
-*  Page for adding new matherial to site.
-*/
+ * @file
+ * Page for adding new matherial to site.
+ */
 include "authorisation.php";
 // cheking authorization
 if (isset($_SESSION['user'])) {

@@ -1,7 +1,8 @@
 <?php
 /**
-*  Admin page for confirmation of deleting users.
-*/
+ * @file
+ * Admin page for confirmation of deleting users.
+ */
 include "authorisation.php";
 if ((isset($_SESSION['user_role'])) and (($_SESSION['user_role']) == 4)) {
   $user_name = trim($_GET['user']);

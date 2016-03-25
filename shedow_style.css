@@ -1,7 +1,52 @@
-#header{
-background: #88a;
-height:7em;
-background-image:url(images/stone.jpg);
+#header {
+  background: #88a;
+  height:7em;
+  /*background-image:url(images/stone.jpg);*/
+}
+
+body {
+  width: 960px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.main-content {
+  margin-top: 15px;
+}
+
+.admin_menu div {
+  float: right;
+  position: relative;
+  right: 300px;
+}
+
+.article {
+  width: 600px;
+  position: relative;
+  left: 50px;
+  margin: 10px 0;
+}
+.article .article_header {
+  font-size: 20px;
+  font-weight: bold;
+  color: #511e1e;
+  padding: 10px 0;
+}
+.article .article_body {
+  font-size: 16px;
+  padding: 10px;
+}
+.article .article_author {
+  display: inline;
+  float: left;
+  font-size: 16px;
+  padding: 10px 15px;
+}
+
+.article .date {
+  padding: 12px 15px 0 0;
+  font-size: 14px;
+  font-style: italic;
 }
 
 p{
@@ -29,9 +74,9 @@ right:70px;
 }
 
 #admin{
-position:absolute;
+/*position:absolute;
 right:170px;
-top:10px;
+top:10px;*/
 }
 
 #large_text{
@@ -46,7 +91,7 @@ font-size:2.2ex;
 }
 
 html{
-background-image:url(images/white.jpg);
+  /*background-image:url(images/white.jpg);*/
 }
 
 #large_text :visited{

@@ -1,7 +1,8 @@
 <?php
 /**
-*  Page where user can view his article just added with "edit" button.
-*/
+ * @file
+ * Page where user can view his article just added with "edit" button.
+ */
 include 'authorisation.php';
 if (!isset($_SESSION['user'])) {
   header("Location: index.php");

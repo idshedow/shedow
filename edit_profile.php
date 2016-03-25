@@ -1,9 +1,13 @@
 <?php
 /**
-*  Page for editing user's profile
-*/
+ * @file
+ * Page for editing user's profile
+ */
+
+$edit_profile = array();
+
 include "authorisation.php";
-include "db.php";
+// include "db.php";
 $user_info = $db->query("SELECT * FROM users WHERE user_name ='" . $_GET['user'] . "'");
 $profile = $user_info->fetch(PDO::FETCH_ASSOC);
 // if you are authorized and have permissions to do it
@@ -31,7 +35,7 @@ if ((isset($_SESSION['user_role'])) and ($_SESSION['user_role'] >= 2)) {
     if (isset($_POST['changed_pass'])) {
       // if we didn't write old password, we cannot change it
       if(!$_POST['old_pass']) {
-        echo "You must write your old password to change it";
+        $edit_profile['errors'][] = "You must write your old password to change it";
       }
       // else checking old password
       else {
@@ -102,7 +106,7 @@ if ((isset($_SESSION['user_role'])) and ($_SESSION['user_role'] >= 2)) {
     }
     // users can delete their profile
     if ($_SESSION['user'] == $profile['user_name']) {
-      echo "<a href='delete_own_acc.php?user=" . $profile['user_name'] . "'>Delete your profile</a>";
+      $edit_profile['delete'] = "<a href='delete_own_acc.php?user=" . $profile['user_name'] . "'>Delete your profile</a>";
     }
   }
   else {
@@ -112,13 +116,48 @@ if ((isset($_SESSION['user_role'])) and ($_SESSION['user_role'] >= 2)) {
 else {
   header("Location: index.php");
 }
+if (!empty($edit_profile['errors'])) {
+  print_r($edit_profile['errors']);
+  // header("Location: {$_SERVER['REQUEST_URI']}");
+}
+if (isset($profile['user_avatar'])) {
+  $edit_profile['avatar'] = "<p id='small_text'>Your avatar: <br><img src='{$profile['user_avatar']}' width='150' height='150'><br>";
+}
+if ((isset($_SESSION['user_role'])) and ($_SESSION['user_role'] == 4)) {
+  $edit_profile['user_roles'] = "<p>User role:</p>";
+  $edit_profile['user_roles'] .= "<select name = 'role' size='1'>";
+  $edit_profile['user_roles'] .= "<option value='4'>Administrator</option>";
+  $edit_profile['user_roles'] .= "<option value='3'>Moderator</option>";
+  $edit_profile['user_roles'] .= "<option value='2'>User</option>";
+  $edit_profile['user_roles'] .= "<option value='1'>Banned</option>";
+  $edit_profile['user_roles'] .= "</select>";
+  $edit_profile['user_roles'] .= "<input type='submit' name='change_role' value='Change role'>";
+  if (isset($_POST['change_role'])) {
+    $edit = $db->prepare("UPDATE users SET user_role = :role WHERE user_name ='" . $_GET['user'] . "'");
+    $edit->bindParam(':role', $_POST['role']);
+    $edit->execute();
+    header("Location: edit_profile.php?user=" . $profile['user_name']);
+  }
+}
 ?>
 
+<!DOCTYPE html>
+<html>
 <head>
+  <title>Shedow site</title>
   <link href="shedow_style.css" rel="stylesheet" type="text/css">
+  <meta charset="utf-8">
 </head>
-<table cellpadding="5">
-<form method="POST" enctype="multipart/form-data">
+<body>
+  <?php print $header; ?>
+  <?php if (!empty($edit_profile['errors'])): ?>
+  <?php foreach($edit_profile['errors'] as $error): ?>
+  <?php print $error; ?>
+  <?php endforeach; ?>
+  <?php endif; ?>
+  <?php print $edit_profile['delete']; ?>
+  <table cellpadding="5">
+  <form method="POST" enctype="multipart/form-data">
 
   <tr><td align="right"><p> User Name: </td> 
     <td><p id="user_name"><?=$profile['user_name']?></td>
@@ -148,37 +187,15 @@ else {
     <input type="file" name="avatar">
     <input type="submit" name="upload" value="Upload"></td>
   </tr> 
-</table>
+  </table>
 
-<?php
-if (isset($profile['user_avatar'])) {
-  echo "<p id='small_text'>Your avatar: <br>";
-  echo '<img src=' . $profile['user_avatar'] . " width='150' height='150'><br>";
-}
-if ((isset($_SESSION['user_role'])) and ($_SESSION['user_role'] == 4)) {
-?>
-
-<!-- Menu where admin can change role of user -->
-<p>User role:
-<select name = 'role' size='1'>
-<option value='4'>Administrator</option>
-<option value='3'>Moderator</option>
-<option value='2'>User</option>
-<option value='1'>Banned</option>
-</select>
-<input type='submit' name='change_role' value='Change role'>
-
-<?php
-  if (isset($_POST['change_role'])) {
-    $edit = $db->prepare("UPDATE users SET user_role = :role WHERE user_name ='" . $_GET['user'] . "'");
-    $edit->bindParam(':role', $_POST['role']);
-    $edit->execute();
-    header("Location: edit_profile.php?user=" . $profile['user_name']);
-  }
-}
-?>
-
-<br>
-<input name="save_changes" type="submit" value="Save Changes">
-<input name="cancel" type="submit" value="Cancel">
+  <?php print $edit_profile['avatar']; ?>
+  <?php print $edit_profile['user_roles']; ?>
+  <br>
+  <div>
+    <input name="save_changes" type="submit" value="Save Changes">
+    <input name="cancel" type="submit" value="Cancel">
+  </div>
 </form>
+</body>
+</html>

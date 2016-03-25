@@ -1,7 +1,8 @@
 <?php
 /**
-*  File with language variables in English.
-*/
+ * @file
+ * File with language variables in English.
+ */
 include 'db.php';
 $language = array();
 $translate = $db->query("SELECT * FROM translate");

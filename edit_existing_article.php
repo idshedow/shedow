@@ -1,7 +1,8 @@
 <?php
 /**
-*  Page for editing articles that was added earlier.
-*/
+ * @file
+ * Page for editing articles that was added earlier.
+ */
 include "authorisation.php";
 $article = $db->query("SELECT * FROM link_list WHERE id =" . $_GET['id']);
 $edit_article = $article->fetch(PDO::FETCH_ASSOC);
@@ -47,8 +48,6 @@ if (($_SESSION['user_role']) >= 3) {
   else {
 ?>
 
-<p>You can edit only your articles.<br>
-<a href='index.php'>Back to Main Page</a>
 
 <?php 
   }
@@ -57,9 +56,21 @@ else
   header("Location: index.php");
 ?>
 
-<form action="<?=$_SERVER['REQUEST_URI']?>" method='post'>
-<input type="text" name="header" size="40" value="<?=$lang_header?>"><br>
-<textarea name='article' cols='100' rows='20'>
-<?=$lang_text?></textarea><br>
-<input name='submit' type='submit' value='Save changes'>
-</form>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shedow site</title>
+  <link href="shedow_style.css" rel="stylesheet" type="text/css">
+  <meta charset="utf-8">
+</head>
+<body>
+  <?php print $header; ?>
+  <form action="<?=$_SERVER['REQUEST_URI']?>" method='post'>
+  <input type="text" name="header" size="40" value="<?=$lang_header?>"><br>
+  <textarea name='article' cols='100' rows='20'><?=$lang_text?></textarea><br>
+  <input name='submit' type='submit' value='Save changes'>
+  </form>
+  <p>You can edit only your articles.<br>
+  <a href='index.php'>Back to Main Page</a>
+</body>
+</html>

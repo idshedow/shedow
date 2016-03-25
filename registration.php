@@ -1,7 +1,8 @@
 <?php
 /**
-*  Registration page.
-*/
+ * @file
+ * Registration page.
+ */
 include 'authorisation.php';
 // if we are authorised, redirecting to main page:
 if (isset($_SESSION['user'])) {

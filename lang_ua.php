@@ -1,7 +1,8 @@
 <?php
 /**
-*  File with language variables in Ukrainian.
-*/
+ * @file
+ * File with language variables in Ukrainian.
+ */
 include 'db.php';
 $language = array();
 $translate = $db->query("SELECT * FROM translate");

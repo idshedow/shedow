@@ -1,9 +1,9 @@
 <?php
 /**
-*  @file
-*  Here is admin page with posibility to edit or delete users' profiles
-*  and to make own translation to menu items.
-*/
+ * @file
+ * Here is admin page with posibility to edit or delete users' profiles
+ * and to make own translation to menu items.
+ */
 include "authorisation.php";
 // only admin have access to this page
 if ($_SESSION['user_role'] == 4) {

@@ -1,7 +1,8 @@
 <?php
 /**
-*  User's page for deleting own account.
-*/
+ * @file
+ * User's page for deleting own account.
+ */
 include "authorisation.php";
 if ((isset($_SESSION['user'])) and ($_SESSION['user'] == $_GET['user'])) {
   $user_name = trim($_SESSION['user']);

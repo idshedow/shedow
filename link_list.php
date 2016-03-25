@@ -1,7 +1,14 @@
 <?php
 /**
-*  List of article teasers and links to full text on main page.
-*/
+ * @file
+ * List of article teasers and links to full text on main page.
+ * @return $list_links array of articles;
+ * $main_page array of other elements;
+ */
+
+$list_links = array();
+$main_page = array();
+
 include 'db.php';
 // if no connect, error and exit()
 if(!($db)) {
@@ -66,44 +73,45 @@ while ($post = $article->fetch(PDO::FETCH_ASSOC)) {
   // to short the text if it is longer 150 symbols:
   if ((strlen($lang_text)) > 150) {
     $shorted_text = substr($lang_text, 0, strpos($lang_text, ' ', 150));
-    echo "<a href=article.php?id={$post['id']}><b>{$lang_header}</b></a><br>{$shorted_text}...<br>
+    $list_links[] = "<a href=article.php?id={$post['id']}><b>{$lang_header}</b></a><br>{$shorted_text}...<br>
       <a href=profile.php?user={$post['list_link_author']}>{$post['list_link_author']}</a>
       <i> {$post['list_link_date']}</i><br><a href=article.php?id={$post['id']}>read more</a><br><br>";
+    
   }
   // if text is shorter 150 symbols - show it all:
   else {
-    echo "<a href=article.php?id={$post['id']}><b>{$lang_header}</b></a><br>{$lang_text}<br>
+    $list_links[] = "<a href=article.php?id={$post['id']}><b>{$lang_header}</b></a><br>{$lang_text}<br>
       <a href=profile.php?user={$post['list_link_author']}>{$post['list_link_author']}</a>
       <i> {$post['list_link_date']}</i><br><br>";
+    
   }
-  echo "<img src='images/city.jpeg' width='480' height='20'><br>";
+  
 }
-?>
-                    <!-- - - - - - - - - - - - PAGER - - - - - - - - - - -  -->
-                      <!-- results 1 - 10 of 21; page  1 of 3; -->
-<br>Results <b><?=$first?></b> - <b><?=$last?></b> of <b><?=$rows?></b>;
-Page <b><?=$current?></b> of <b><?=$total?></b>;
+$main_page['delimiter'] = "<img src='images/city.jpeg' width='480' height='20'><br>";
+$main_page['pager'] = "<br>Result <b>{$first}</b> - <b>{$last}</b> of <b>{$rows}</b>; Page <b>{$current}</b> of <b>{$total}</b>;";
 
-<?php                               // 1  2  3  next
-// if current page is first page - don't show the link "back"
+// ***********************  Pager  ***************************************
 if ($page != 0) {
   $back_page = $page - $limit;
-  echo "<a href={$_SERVER['PHP_SELF']}?page={$back_page}> back </a>";
+  $main_page['pager'] .= "<a href={$_SERVER['PHP_SELF']}?page={$back_page}> back </a>";
+  
 }
 // don't show the link to number of current page:
 for ($i = 1; $i <= $pages; $i++) {
   $ppage = $limit * ($i - 1);
   if ($ppage == $page) {
-    echo "<b> $i </b>";
+    $main_page['pager'] .= "<b> $i </b>";
+    
   }
   else {
-    echo "<a href={$_SERVER['PHP_SELF']}?page={$ppage}> $i </a>";
+    $main_page['pager'] .= "<a href={$_SERVER['PHP_SELF']}?page={$ppage}> $i </a>";
+    
   }
 }
 // if current page is last don't show the link "next"
 if (!((($page + $limit) / $limit) >= $pages) && ($pages != 1)) {
   $next_page = $page + $limit;
-  echo "<a href={$_SERVER['PHP_SELF']}?page={$next_page}>next</a>";
+  $main_page['pager'] .= "<a href={$_SERVER['PHP_SELF']}?page={$next_page}>next</a>";
 }
 ?>
-<hr>
+

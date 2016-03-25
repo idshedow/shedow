@@ -1,9 +1,10 @@
 <?php
 /**
-*  Page for editing the new article. 
-*  Only usable on articles just added to data base.
-*  To edit older article use the form in edit_existing_article.php.
-*/
+ * @file
+ * Page for editing the new article. 
+ * Only usable on articles just added to data base.
+ * To edit older article use the form in edit_existing_article.php.
+ */
 include "authorisation.php";
 // only authorized users with moder's or admin's permissions can do this
 if (!isset($_SESSION['user'])) {

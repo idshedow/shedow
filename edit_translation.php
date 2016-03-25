@@ -1,7 +1,8 @@
 <?php
 /**
-*  Admin page for editinf translation of menu items.
-*/
+ * @file
+ * Admin page for editinf translation of menu items.
+ */
 include "authorisation.php";
 if ($_SESSION['user_role'] == 4)
 {
